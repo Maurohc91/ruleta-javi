@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#2b0f4f" />
+    <meta
+      name="description"
+      content="DESPEJAVI: ruleta de pruebas para una despedida de soltero, pensada para móvil."
+    />
+    <title>DESPEJAVI</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="header">
+        <div class="hero-frame media-frame" aria-label="Foto de Javi mítico">
+          <img
+            class="image-with-fallback hero-image"
+            src="assets/images/javimitico.png"
+            alt="Javi Mítico"
+          />
+          <div class="image-placeholder hero-placeholder" aria-hidden="true">
+            <span>📸</span>
+            <strong>JAVI MÍTICO</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="toolbar">
+          <button id="menuToggleButton" class="menu-button" type="button">☰ PRUEBAS</button>
+          <button id="spinButton" class="spin-button" type="button">🎯 GIRAR</button>
+        </div>
+
+        <div class="status-panel" aria-live="polite">
+          <div id="statusHeading" class="status-heading">PRUEBAS PENDIENTES</div>
+          <div class="status-counter">
+            <span id="pendingCounterValue">12 / 12</span>
+          </div>
+          <div id="completedCounter" class="status-badge">🏆 0 PRUEBAS COMPLETADAS</div>
+        </div>
+
+        <section class="wheel-panel" aria-label="Ruleta de pruebas">
+          <div class="wheel-outer">
+            <div class="wheel-pointer" aria-hidden="true"></div>
+            <canvas id="wheelCanvas" width="360" height="360"></canvas>
+            <div class="wheel-center" aria-hidden="true">🎯</div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <aside id="challengeMenu" class="side-menu" aria-label="Menú de pruebas">
+      <div class="menu-header">
+        <h2>PRUEBAS</h2>
+        <button id="closeMenuButton" class="icon-button" type="button" aria-label="Cerrar menú">✕</button>
+      </div>
+
+      <button id="resetButton" class="reset-button" type="button">🔄 REINICIAR PARTIDA</button>
+
+      <div id="categoryFilters" class="category-filters" aria-label="Filtrar por categoría"></div>
+      <div id="challengeList" class="challenge-list" aria-live="polite"></div>
+    </aside>
+
+    <div id="menuBackdrop" class="menu-backdrop" aria-hidden="true"></div>
+
+    <div id="modalOverlay" class="modal-overlay" aria-hidden="true">
+      <div class="challenge-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button id="closeModalButton" class="close-modal" type="button" aria-label="Cerrar popup">✕</button>
+
+        <div class="modal-media media-frame">
+          <img id="modalImage" class="image-with-fallback modal-image" alt="Imagen de la prueba" />
+          <div class="image-placeholder modal-placeholder" aria-hidden="true">
+            <span>📸</span>
+            <strong>FOTO DE LA PRUEBA</strong>
+          </div>
+        </div>
+
+        <div class="modal-body">
+          <div id="modalCategory" class="modal-category">CATEGORÍA</div>
+          <h3 id="modalTitle">PRUEBA</h3>
+          <p id="modalDescription">Descripción de la prueba.</p>
+        </div>
+
+        <button id="completeChallengeButton" class="complete-button" type="button">
+          ✅ PRUEBA COMPLETADA
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
