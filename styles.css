@@ -152,11 +152,21 @@ button {
 
 .hero-frame {
   position: relative;
-  min-height: 190px;
+  min-height: 160px;
   border-radius: var(--radius-xl);
   overflow: hidden;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 9, 28, 0.15));
   box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Show a smaller centered logo inside the hero frame */
+.hero-frame .hero-image {
+  width: auto;
+  height: 90%;
+  object-fit: contain;
 }
 
 .main-content {

@@ -154,7 +154,7 @@ const pruebas = [
     nombreCompacto: 'FALTA',
     categoria: 'varios',
     descripcion: 'Ha d’aconseguir que 4 desconeguts es posen en fila a la vorera fent de barrera mentre ell llança una falta imaginària.',
-    imagen: 'assets/images/prueba15.jpg',
+    imagen: 'assets/images/falta.png',
     completada: false,
     activa: true,
   },
@@ -164,7 +164,7 @@ const pruebas = [
     nombreCompacto: 'VAR',
     categoria: 'varios',
     descripcion: 'Ha de fer-li el gest de canvi de jugador a un xic del carrer i aconseguir que faça el xoc de mans amb ell.',
-    imagen: 'assets/images/prueba16.jpg',
+    imagen: 'assets/images/var.png',
     completada: false,
     activa: true,
   },
@@ -174,7 +174,7 @@ const pruebas = [
     nombreCompacto: 'PREMSA',
     categoria: 'varios',
     descripcion: 'Els amics el rodegen amb mòbils i li fan preguntes com si fora un periodista esportiu.',
-    imagen: 'assets/images/prueba17.jpg',
+    imagen: 'assets/images/premsa.png',
     completada: false,
     activa: true,
   },
@@ -184,7 +184,7 @@ const pruebas = [
     nombreCompacto: 'MIRADA',
     categoria: 'varios',
     descripcion: 'Ha de mantindre la mirada fixa amb un guiri durant 10 segons seguits fins que somrigue o brinde.',
-    imagen: 'assets/images/prueba18.jpg',
+    imagen: 'assets/images/mirada.png',
     completada: false,
     activa: true,
   },
@@ -194,7 +194,7 @@ const pruebas = [
     nombreCompacto: 'FUM',
     categoria: 'varios',
     descripcion: 'Ha d’intentar convéncer algú perquè li compre un objecte absurd per 50 cèntims o a canvi d’un glop de cervesa.',
-    imagen: 'assets/images/prueba19.jpg',
+    imagen: 'assets/images/fum.png',
     completada: false,
     activa: true,
   },
@@ -204,7 +204,7 @@ const pruebas = [
     nombreCompacto: 'SING-ALONG',
     categoria: 'varios',
     descripcion: 'Ha d’aconseguir que tot el grup de la taula del costat cante a cor una frase d’una cançó abans de brindar.',
-    imagen: 'assets/images/prueba20.jpg',
+    imagen: 'assets/images/sing-along.png',
     completada: false,
     activa: true,
   },
@@ -214,7 +214,7 @@ const pruebas = [
     nombreCompacto: 'LLEGENDA',
     categoria: 'varios',
     descripcion: 'Ha de trobar un altre novio d’una altra despedida, cridar “AURA BATTLE!” i fer-li la seqüència completa.',
-    imagen: 'assets/images/prueba21.jpg',
+    imagen: 'assets/images/llegenda.png',
     completada: false,
     activa: true,
   },
@@ -224,7 +224,7 @@ const pruebas = [
     nombreCompacto: 'FLEXIONS',
     categoria: 'varios',
     descripcion: 'Ha de fer 10 flexions i, en l’última, beure’s un xupito sense tocar-lo amb les mans.',
-    imagen: 'assets/images/prueba22.jpg',
+    imagen: 'assets/images/flexions.png',
     completada: false,
     activa: true,
   },
@@ -234,7 +234,7 @@ const pruebas = [
     nombreCompacto: 'SEGREST',
     categoria: 'varios',
     descripcion: 'Ha de gravar un vídeo caracteritzat com si haguera sigut “segrestat” pel grup durant les pròximes 36 hores.',
-    imagen: 'assets/images/prueba23.jpg',
+    imagen: 'assets/images/segrestat.png',
     completada: false,
     activa: true,
   },
@@ -244,7 +244,7 @@ const pruebas = [
     nombreCompacto: 'ORACLE',
     categoria: 'terra-mitica',
     descripcion: 'Després de passar per una atracció d’aigua, ha d’eixir banyat i anunciar una profecia a almenys 3 grups diferents.',
-    imagen: 'assets/images/prueba24.jpg',
+    imagen: 'assets/images/oracle.png',
     completada: false,
     activa: true,
   },
@@ -254,7 +254,7 @@ const pruebas = [
     nombreCompacto: 'CUES',
     categoria: 'terra-mitica',
     descripcion: 'Com anirà vestit de romà, haurà d’intentar negociar prioritat a la cua amb serietat i fer unes flexions si falla.',
-    imagen: 'assets/images/prueba25.jpg',
+    imagen: 'assets/images/cues.png',
     completada: false,
     activa: true,
   },
@@ -307,7 +307,6 @@ function setupEventListeners() {
   window.addEventListener('resize', drawWheel);
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
-      closeMenu();
       closeChallengeModal();
     }
   });
@@ -666,21 +665,48 @@ function openChallengeModal(challengeId) {
   const modalCategory = document.getElementById('modalCategory');
   const modalDescription = document.getElementById('modalDescription');
   const modalImage = document.getElementById('modalImage');
-
   modalTitle.textContent = challenge.nombre;
   modalCategory.textContent = `${categoryMeta[challenge.categoria].icon} ${categoryMeta[challenge.categoria].label}`;
   modalDescription.textContent = challenge.descripcion;
 
-  modalImage.src = challenge.imagen;
+  // Debug logging to help diagnose image loading issues
+  try {
+    console.debug('Opening modal for challenge', challengeId, 'image:', challenge.imagen);
+  } catch (e) {}
+
   modalImage.alt = challenge.nombre;
-  modalImage.style.display = 'block';
+  modalImage.style.display = 'none';
 
   const frame = modalImage.closest('.media-frame');
-  frame.classList.remove('fallback-visible');
+  if (frame) frame.classList.remove('fallback-visible');
+
+  // Remove previous handlers to avoid duplication
+  modalImage.onload = () => {
+    try {
+      console.debug('Modal image loaded:', modalImage.src, 'naturalWidth:', modalImage.naturalWidth);
+    } catch (e) {}
+    modalImage.style.display = 'block';
+    if (frame) frame.classList.remove('fallback-visible');
+  };
+
   modalImage.onerror = () => {
-    frame.classList.add('fallback-visible');
+    try {
+      console.warn('Failed to load modal image:', modalImage.src);
+    } catch (e) {}
+    if (frame) frame.classList.add('fallback-visible');
     modalImage.style.display = 'none';
   };
+
+  // Set src last to trigger load events
+  modalImage.src = challenge.imagen;
+
+  // Safety: if the image doesn't load within a short time, show placeholder
+  setTimeout(() => {
+    if (modalImage.naturalWidth === 0) {
+      if (frame) frame.classList.add('fallback-visible');
+      modalImage.style.display = 'none';
+    }
+  }, 400);
 
   modal.classList.add('visible');
   modal.setAttribute('aria-hidden', 'false');
